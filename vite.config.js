@@ -6,6 +6,7 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '05react-quizV1',
   server: {
     open: true,
   },
