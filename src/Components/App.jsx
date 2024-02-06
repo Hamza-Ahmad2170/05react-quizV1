@@ -99,7 +99,7 @@ function App() {
   }, 0);
 
   useEffect(() => {
-    fetch("https://github.com/Hamza-Ahmad2170/05react-quizV1/blob/master/data/questions.json")
+    fetch("http://localhost:8000/questions")
       .then((res) => res.json())
       .then((data) => dispatch({ type: "dataReceived", payload: data }))
       .catch(() => dispatch({ type: "dataFailed" }));
