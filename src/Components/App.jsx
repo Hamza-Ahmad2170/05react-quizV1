@@ -11,7 +11,7 @@ import FinishedScreen from "./FinishedScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
 
-const SECS_PER_QUESTION = 30
+const SECS_PER_QUESTION = 30;
 
 const initialState = {
   questions: [],
@@ -31,16 +31,16 @@ function reducer(state, action) {
         questions: action.payload,
         status: "ready",
       };
-      case "dataFailed":
-        return {
-          ...state,
-          status: "error",
-        };
-        case "start":
-          return {
-            ...state,
-            status: "active",
-            secondsRemaining: state.questions.length * SECS_PER_QUESTION
+    case "dataFailed":
+      return {
+        ...state,
+        status: "error",
+      };
+    case "start":
+      return {
+        ...state,
+        status: "active",
+        secondsRemaining: state.questions.length * SECS_PER_QUESTION,
       };
 
     case "tick":
@@ -98,10 +98,25 @@ function App() {
     return preValue + currValue.points;
   }, 0);
 
+  function fetchData() {
+    if (import.meta.env.MODE === "development") {
+      return fetch("http://localhost:8000/questions");
+    }
+    return fetch(import.meta.env.VITE_NPOINT_URL);
+  }
+
   useEffect(() => {
-    fetch("http://localhost:8000/questions")
+    fetchData()
       .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataReceived", payload: data }))
+      .then((data) => {
+        if (import.meta.env.MODE === "development") {
+          return dispatch({ type: "dataReceived", payload: data });
+        }
+        return dispatch({
+          type: "dataReceived",
+          payload: data.record.questions,
+        });
+      })
       .catch(() => dispatch({ type: "dataFailed" }));
   }, []);
 
