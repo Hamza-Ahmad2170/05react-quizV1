@@ -8,8 +8,7 @@ NextButton.propTypes = {
 };
 
 function NextButton({ dispatch, answer, numQuestions, index }) {
-  if (!answer) return;
-  
+  if (answer === null || answer === undefined) return null;
 
   if (index < numQuestions - 1)
     return (
