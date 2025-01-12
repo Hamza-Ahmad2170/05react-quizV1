@@ -112,9 +112,10 @@ function App() {
         if (import.meta.env.MODE === "development") {
           return dispatch({ type: "dataReceived", payload: data });
         }
+
         return dispatch({
           type: "dataReceived",
-          payload: data.record.questions,
+          payload: data.questions,
         });
       })
       .catch(() => dispatch({ type: "dataFailed" }));
